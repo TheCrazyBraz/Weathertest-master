@@ -188,24 +188,32 @@ Vue.createApp({
   
       ];
       const resultbox =document.querySelector(".result-box");
-      const countryInput=document.getElementById("countryInput");
-      countryinput.onkeyup=function(){
+      const inputBox=document.getElementById("countryInput");
+      inputBox.onkeyup=function(){
         let result =[];
-        let input =countryInput.value;
+        let input =inputBox.value;
         if(input.lenght){
-          result =availablekeywords.filter((keyword)=>{
+          result =availablekeyword.filter((keyword)=>{
            return keyword.toLowerCase().includes(input.toLowerCase());
           });
-          console.log(result)
+          console.log(result);
+
+          if(!result.lenght){
+            resultbox.innerHTML ='';
+          }
         }
         display(result);
       }
       function display(result){
         const content = result.map((list)=>{
-          return "<li>"+ list +"</li>";
+          return "<li onclick =selectInput(this)>"+ list +"</li>";
         })
   
         resultbox.innerHTML = "<ul>"+ content.join('') +"</ul>";
+      }
+      function selectInput(list){
+        inputBox.value = list.innerHTML;
+        resultsBox.innerHTML=''
       }
     }
   },

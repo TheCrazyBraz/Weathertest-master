@@ -40,6 +40,19 @@
 </header>
 
 <body>
+  <div class="search-box" >
+    <div class ="row">
+      <span class="input-space"></span>
+      <input type="text" id="countryInput" placeholder="Search"
+      autocomplete="off">
+    </div>
+    <div class="result-box">
+    </div>
+    <ul>
+      <li>Paris</li>
+    </ul>
+  </div>
+</div>
   <div id="app">
     <div>
       <label for="cityInput">City:</label>
@@ -48,15 +61,7 @@
       <label for="countryInput">Country:</label>
       <input type="text" id="countryInput" v-model="country" />
       <button @click="updateBaseUrl">Confirm</button>
-      
-      <div class="result-box">
-        <ul>
-          <li> denmark</li>
-          <li> England</li>
-            <li>Paris</li>
-        </ul>
-      </div>
-    </div>
+
     <div class="container">
     <div class="row">
 
