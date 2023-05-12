@@ -1,0 +1,73 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+.input-space {
+    margin-right: 50px; /* Adjust the margin value as needed */
+  }
+#weatherChart {
+    width: 600px;
+    height: 300px;
+  }
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*body {
+  margin-bottom: 60px;
+}*/
+
+body {
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 60px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 110vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(0, 0, 0);
+    font-size: large;
+}
+
+header {
+    background-color: rgb(221, 155, 56);
+    font-family: 'Calisto MT';
+    font-size: small;
+    font-weight: 600;
+}
+
+
+footer {
+    background-color: black;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Height of the footer */
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+    font-size: large;
+}
+
+button:hover {
+    opacity: 0.5;
+}
+
+hr {
+    width: auto;
+     
+    color:rgb(0, 0, 0);
+
+}
+
+
+  
+
+ 

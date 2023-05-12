@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather output, Axios</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
+  <script src="https://unpkg.com/vue@next"></script>
+  <link rel="stylesheet" href="site.css" >
+  <script src="Site.css"></script>
+</head>
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" >Weather Wear</a>
+            
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                   
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="https://www.zealand.dk/" target="_blank">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <img src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
+             alt="User Icon" style="width: 50px;height:50px;
+            border-radius:2px; padding: 2px; margin-right:0%;" >
+        <div style="margin-right:10%">
+            Your Profile
+        </div>
+    </nav>
+</header>
+
+<body>
+  <div id="app">
+    <div>
+      <label for="cityInput">City:</label>
+      <input type="text" id="cityInput" v-model="city" />
+      <span class="input-space"></span>
+      <label for="countryInput">Country:</label>
+      <input type="text" id="countryInput" v-model="country" />
+      <button @click="updateBaseUrl">Confirm</button>
+      
+      <div class="result-box">
+        <ul>
+          <li> denmark</li>
+          <li> England</li>
+            <li>Paris</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+    <div class="row">
+
+      <div class="col-sm border bg-light">
+        Weatherforecast
+        <canvas id="weatherChart"></canvas>
+      </div>
+      <div class="col-sm border bg-light">
+        Top
+        <div v-if="weather != null">
+          {{ weather.days[day].appropriateTop }}
+        </div>
+      </div>
+      <div class="col-sm border bg-light">
+      Bottle of Wottah
+      <div v-if="weather != null">
+        {{ weather.days[day].appropriateDrink }}
+      </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm border bg-light">
+        Choose Day and hour
+        <div v-if="selectedDay !== null">
+          <p>You have selected {{ selectedDay.datetime }}</p>
+          <button @click="previousDay()">Previous Day</button><button @click="nextDay()">Next day</button>
+        </div>
+        <label for="hour-select">Select hour:</label>
+          <select id="hour-select" v-model="time">
+            <option v-for="hour in hours" :key="hour" :value="hour">{{ hour }}</option>
+          </select>
+      </div>
+      <div class="col-sm border bg-light">
+        Bottom
+        <div v-if="weather != null">
+          {{ weather.days[day].appropriateBottom }}
+        </div>
+      </div>
+      <div class="col-sm border bg-light">
+        Accesories
+        <div v-if="weather != null">
+          {{ weather.days[day].appropriateAccecories }}
+        </div>
+      </div>
+    </div>
+    </div>
+  
+    <table v-if="weather != null" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Temperature</th>
+          <th>Clothing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(day, index) in weather.days" :key="index">
+          <td>{{day.datetime}}</td>
+          <td>
+            <table>
+              <tbody>
+                <tr v-for="(hour, index2) in day.hours" :key="index2">
+                  <td v-if="hour.datetime === time">{{hour.datetime}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <table>
+              <tbody>
+                <tr v-for="(hour, index2) in day.hours" :key="index2">
+                  <td v-if="hour.datetime === time">{{hour.temp}} °C</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <button @click="showAppropriateTop(day)">Get Top</button>
+            <div v-if="day.appropriateTop !== undefined">{{day.appropriateTop}}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else>No such weather (Bad request)</div>
+
+  </div>
+  <script src="index.js"></script>
+</body>
+
+</html>
