@@ -20,13 +20,38 @@ Vue.createApp({
       gender: '',
       easilyCold: false,
       users: [],
+      availableKeywords: [
+      'Paris',
+      'England',
+      'Italy',
+      'Spain',
+      'Germany'
+      ],
+      inputValue: '',
+      showDropdown: false
     }
   },
   async created() {
     await this.getAll(this.baseUrl);
   },
-
+  
+    computed:{
+    filteredKeywords() {
+      return this.availableKeywords.filter(keyword =>
+        keyword.toLowerCase().includes(this.inputValue.toLowerCase())
+      );
+    }
+  },
+  
   methods: {
+        handleInput() {
+      this.showDropdown = this.inputValue.length > 0;
+    },
+        selectInput(keyword) {
+      this.inputValue = keyword;
+      this.showDropdown = false;
+    },
+    
     createUser() {
       console.log("Creating user")
       const user = {
