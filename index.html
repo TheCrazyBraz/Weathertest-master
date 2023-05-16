@@ -40,19 +40,17 @@
 </header>
 
 <body>
-  <div class="search-box" >
-    <div class ="row">
-      <span class="input-space"></span>
-      <input type="text" id="countryInput" placeholder="Search"
-      autocomplete="off">
+  <div id="app">
+    <div>
+      <label for="search-bar">Search for a city:</label>
+      <input type="text" id="search-bar" v-model="inputValue" @input="handleInput" placeholder="Type a city name">
+  
+      <div class="result-box" v-show="showDropdown">
+        <ul>
+          <li v-for="keyword in filteredKeywords" :key="keyword" @click="selectInput(keyword)">{{ keyword }}</li>
+        </ul>
+      </div>
     </div>
-    <div class="result-box">
-    </div>
-    <ul>
-      <li>Paris</li>
-    </ul>
-  </div>
-</div>
   <div id="app">
     <label for="age">Age:</label>
       <input type="number" v-model="age" id="age">
