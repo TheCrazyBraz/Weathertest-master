@@ -222,41 +222,6 @@ Vue.createApp({
       } else {
         return "Placeholder over 20 grader";
       }
-    },
-    autocomplete(){
-      let availablekeyword = [
-        'Paris',
-        'England',
-  
-      ];
-      const resultbox =document.querySelector(".result-box");
-      const inputBox=document.getElementById("countryInput");
-      inputBox.onkeyup=function(){
-        let result =[];
-        let input =inputBox.value;
-        if(input.lenght){
-          result =availablekeyword.filter((keyword)=>{
-           return keyword.toLowerCase().includes(input.toLowerCase());
-          });
-          console.log(result);
-
-          if(!result.lenght){
-            resultbox.innerHTML ='';
-          }
-        }
-        display(result);
-      }
-      function display(result){
-        const content = result.map((list)=>{
-          return "<li onclick =selectInput(this)>"+ list +"</li>";
-        })
-  
-        resultbox.innerHTML = "<ul>"+ content.join('') +"</ul>";
-      }
-      function selectInput(list){
-        inputBox.value = list.innerHTML;
-        resultsBox.innerHTML=''
-      }
     }
   },
   watch: {
