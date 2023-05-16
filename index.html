@@ -54,6 +54,25 @@
   </div>
 </div>
   <div id="app">
+    <label for="age">Age:</label>
+      <input type="number" v-model="age" id="age">
+      <label for="gender">Gender:</label>
+      <select v-model="gender" id="gender">
+        <option value="">Please select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <label for="easily-cold">Easily Cold:</label>
+      <input type="checkbox" v-model="easilyCold" id="easily-cold">
+      <button type="button" @click="createUser()">Create User</button>
+      <div v-if="users.length > 0">
+        <h2>Users:</h2>
+        <ul>
+          <li v-for="(user, index) in users" :key="index">
+            {{ user.age }}, {{ user.gender }}, {{ user.easilyCold }}
+          </li>
+        </ul>
+      </div>
     <div>
       <label for="cityInput">City:</label>
       <input type="text" id="cityInput" v-model="city" />
