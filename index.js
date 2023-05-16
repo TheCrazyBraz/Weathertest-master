@@ -16,6 +16,10 @@ Vue.createApp({
       currentIndex: 0,
       country: "Denmark",
       city: "Roskilde",
+      age: '',
+      gender: '',
+      easilyCold: false,
+      users: [],
     }
   },
   async created() {
@@ -23,6 +27,19 @@ Vue.createApp({
   },
 
   methods: {
+    createUser() {
+      console.log("Creating user")
+      const user = {
+        age: this.age,
+        gender: this.gender,
+        easilyCold: this.easilyCold
+      };
+      console.log(user);
+      this.users.push(user);
+      this.age = '';
+      this.gender = '';
+      this.easilyCold = false;
+    },
     updateBaseUrl(){
       const encodedCountry = encodeURIComponent(this.country);
       const encodedCity = encodeURIComponent(this.city);
