@@ -11,36 +11,51 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
   <script src="https://unpkg.com/vue@next"></script>
   <link rel="stylesheet" href="site.css" >
-  <script src="Site.css"></script>
+
 </head>
-
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" >Weather Wear</a>
-            
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                   
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="https://www.zealand.dk/" target="_blank">About Us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-
-        <img src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-             alt="User Icon" style="width: 50px;height:50px;
-            border-radius:2px; padding: 2px; margin-right:0%;" >
-        <div style="margin-right:10%">
-            Your Profile
-        </div>
-    </nav>
-</header>
 
 <body>
   <div id="app">
+  <div class="header">
+    <header>
+      <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+          <div class="container">
+              <a class="navbar-brand" >Weather Wear</a>
+              
+              <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                  <ul class="navbar-nav flex-grow-1">
+                    
+                      <li class="nav-item">
+                          <a class="nav-link text-dark" href="https://www.zealand.dk/" target="_blank">About Us</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+
+
+          <img src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
+              alt="User Icon" style="width: 50px;height:50px;
+              border-radius:2px; padding: 2px; margin-right:0%;" >
+          <div style="margin-right:10%">
+            <div>
+              <select v-model="selectedUser">
+                <option disabled value="">Select a user</option>
+                <option v-for="(user, index) in users" :value="index" :key="index">
+                  {{ user.age }} - {{ user.gender }}
+                </option>
+              </select>
+    
+              <div v-if="selectedUser !== null">
+                <h2>{{ users[selectedUser].age }}, {{ users[selectedUser].gender }}</h2>
+                <p>Easily Cold: {{ users[selectedUser].easilyCold }}</p>
+              </div>
+            </div>
+          </div>
+      </nav>
+    </header>
+  </div>
+
+    <main>
     <div>
       <label for="search-bar">Search for a city:</label>
       <input type="text" id="search-bar" v-model="inputValue" @input="handleInput" placeholder="Type a city name">
@@ -50,8 +65,7 @@
           <li v-for="keyword in filteredKeywords" :key="keyword" @click="selectInput(keyword)">{{ keyword }}</li>
         </ul>
       </div>
-    </div>
-  <div id="app">
+      <br>
     <label for="age">Age:</label>
       <input type="number" v-model="age" id="age">
       <label for="gender">Gender:</label>
@@ -165,7 +179,7 @@
       </tbody>
     </table>
     <div v-else>No such weather (Bad request)</div>
-
+  </main>
   </div>
   <script src="index.js"></script>
 </body>

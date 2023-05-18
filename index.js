@@ -19,7 +19,9 @@ Vue.createApp({
       age: '',
       gender: '',
       easilyCold: false,
-      users: [],
+      users: [{age: '36', gender: 'Male', easilyCold: false}, 
+              {age: '13', gender: 'Female', easilyCold: true}],
+      selectedUser: null,
       availableKeywords: [
       'Paris',
       'England',
@@ -28,10 +30,11 @@ Vue.createApp({
       'Germany'
       ],
       inputValue: '',
+      modifiedWeather: null,
       showDropdown: false
     }
   },
-  async created() {
+  created: async function() {
     await this.getAll(this.baseUrl);
   },
   
@@ -40,16 +43,87 @@ Vue.createApp({
       return this.availableKeywords.filter(keyword =>
         keyword.toLowerCase().includes(this.inputValue.toLowerCase())
       );
-    }
+    },
   },
   
   methods: {
+    async fetchWeatherData() {
+      const apiUrl = `${this.baseUrl}`; // Adjust the endpoint path as per your API
+    
+      try {
+        console.log("Fetching weather data")
+        const response = await fetch(apiUrl);
+        this.weather = await response.json();
+    
+        // Create a copy of the weather object
+        this.modifiedWeather = JSON.parse(JSON.stringify(this.weather));
+    
+        // Call the updateUserData method to apply user-specific modifications
+        this.updateUserData();
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    },
+    updateUserData() {
+      console.log('Updating user data...');
+      console.log('Selected user:', this.selectedUser);
+    
+      if (this.selectedUser !== null) {
+        console.log('Inside selected user if block');
+    
+        const selectedUser = this.users[this.selectedUser];
+    
+        this.modifiedWeather.days.forEach(day => {
+          day.hours.forEach(hour => {
+            const matchingHour = this.weather.days[0].hours.find(defaultHour => defaultHour.datetime === hour.datetime);
+            console.log('matchingHour:', matchingHour);
+            console.log('hour.datetime:', hour.datetime);
+    
+            if (matchingHour) {
+              console.log('Inside matchingHour if block');
+              console.log('matchingHour.temp:', matchingHour.temp);
+    
+              let localTemp = matchingHour.temp; // Initialize localTemp for each hour
+              console.log('Updated localTemp:', localTemp);
+    
+              if (selectedUser.easilyCold && hour.temp !== matchingHour.temp) {
+                localTemp -= 25;
+                console.log('Modified localTemp:', localTemp);
+              } else if (!selectedUser.easilyCold && hour.temp !== matchingHour.temp) {
+                localTemp = matchingHour.temp;
+              }
+    
+              hour.temp = localTemp; // Update the temperature value for the hour
+            }
+          });
+        });
+      }
+    
+      this.showAppropriateTop(this.modifiedWeather.days[this.day]);
+      this.showAppropriateBottom(this.modifiedWeather.days[this.day]);
+      this.showAppropriateDrink(this.modifiedWeather.days[this.day]);
+      this.showAppropriateAccecories(this.modifiedWeather.days[this.day]);
+      this.renderChart();
+
+      this.weather.days = this.modifiedWeather.days;
+    },
+    
         handleInput() {
       this.showDropdown = this.inputValue.length > 0;
     },
-        selectInput(keyword) {
+    selectInput(keyword) {
+      
       this.inputValue = keyword;
       this.showDropdown = false;
+
+      this.updateUserData();
+      
+      this.showAppropriateTop(this.selectedDay);
+      this.showAppropriateBottom(this.selectedDay);
+      this.showAppropriateDrink(this.selectedDay);
+      this.showAppropriateAccecories(this.selectedDay);
+      
+      this.renderChart();
     },
     
     createUser() {
@@ -66,8 +140,8 @@ Vue.createApp({
       this.easilyCold = false;
     },
     updateBaseUrl(){
-      const encodedCountry = encodeURIComponent(this.country);
-      const encodedCity = encodeURIComponent(this.city);
+      const encodedCountry = encodeURIComponent(this.country.trim());
+      const encodedCity = encodeURIComponent(this.city.trim());
       this.baseUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodedCountry}%2C%20${encodedCity}?unitGroup=metric&key=9T8ZW3HTFGMM98NXPAPTV2VS9&contentType=json`
       this.getAll(this.baseUrl);
     },
@@ -76,12 +150,12 @@ Vue.createApp({
         const response = await axios.get(url);
         this.weather = response.data;
 
-        
         if (this.weather && this.weather.days && this.weather.days.length > 0) {
           const firstDay = this.weather.days[0];
           const hour = firstDay.hours.find(hour => hour.datetime.includes(this.time));
           if (hour) {
             this.temperature = hour.temp;
+
             console.log(`Temperature at ${this.time} on the first day: ${this.temperature}°C`);
           } else {
             console.log(`No temperature data found for ${this.time} on the first day`);
@@ -118,23 +192,50 @@ Vue.createApp({
     },
     showAppropriateTop(day) {
       this.selectedDay = day;
-      const top = this.showTop(day.hours.find(hour => hour.datetime === this.time).temp);
+      const hour = day.hours.find(hour => hour.datetime === this.time);
+      const temp = hour ? hour.temp : null; // Update the temperature value
+    
+      const top = this.showTop(temp);
       day.appropriateTop = top;
     },
+    
     showAppropriateBottom(day) {
       this.selectedDay = day;
-      const bottom = this.showBottom(day.hours.find(hour => hour.datetime === this.time).temp);
+      const hour = day.hours.find(hour => hour.datetime === this.time);
+      const temp = hour ? hour.temp : null; // Update the temperature value
+    
+      const bottom = this.showBottom(temp);
       day.appropriateBottom = bottom;
     },
+    
     showAppropriateDrink(day) {
       this.selectedDay = day;
-      const Drink = this.showDrink(day.hours.find(hour => hour.datetime === this.time).temp);
-      day.appropriateDrink = Drink;
+      const hour = day.hours.find(hour => hour.datetime === this.time);
+      const temp = hour ? hour.temp : null; // Update the temperature value
+    
+      const drink = this.showDrink(temp);
+      day.appropriateDrink = drink;
+    },
+    getMatchingHour(day) {
+      // Logic to find and return the matching hour based on selectedDay
     },
     showAppropriateAccecories(day) {
-      this.selectedDay = day;
-      const Accecories = this.showAccecories(day.hours.find(hour => hour.datetime === this.time).temp);
-      day.appropriateAccecories = Accecories;
+        let localTemp = this.hour && this.hour.temp;
+      
+        if (day) {
+          const matchingHour = this.getMatchingHour(day);
+      
+          if (matchingHour && matchingHour.temp !== undefined) {
+            localTemp = matchingHour.temp;
+            console.log('Updated localTemp:', localTemp);
+          }
+        }
+        this.selectedDay = day;
+        const hour = day.hours.find(hour => hour.datetime === this.time);
+        const temp = hour ? hour.temp : null; // Update the temperature value
+
+        const accecories = this.showAccecories(temp);
+        day.appropriateAccecories = accecories;
     },
     renderChart() { //Weather Chart til WeatherForecast feltet
       const hours = this.weather.days[this.currentIndex].hours;
@@ -225,6 +326,12 @@ Vue.createApp({
     }
   },
   watch: {
+    selectedUser(newVal) {
+      this.updateUserData();
+      console.log("Initializing UpdateUserData (Watch)")
+      console.log("Selected user:", this.users[newVal]);
+
+    },
     weather: {
       immediate: true,
       handler(newVal) {
@@ -236,6 +343,7 @@ Vue.createApp({
     }
   },
   mounted() {
+    this.fetchWeatherData();
     console.log("Mounted hook called");
     console.log("this.weather:", this.weather);
   },
