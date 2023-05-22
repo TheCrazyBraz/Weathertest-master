@@ -17,10 +17,10 @@ Vue.createApp({
       country: "Denmark",
       city: "Roskilde",
       age: '',
-      gender: '',
+      gender: 'Male',
       easilyCold: false,
-      users: [{age: '36', gender: 'Male', easilyCold: false}, 
-              {age: '13', gender: 'Female', easilyCold: true}],
+      users: [{age: '52', gender: 'male', easilyCold: false}, 
+              {age: '13', gender: 'female', easilyCold: true}],
       selectedUser: null,
       availableKeywords: [
       'Paris',
@@ -284,44 +284,84 @@ Vue.createApp({
     },
     
     showTop(temp) {
-      if (temp < 0) {
-        return "Winter Jacket";
-      } else if (temp >= 5 && temp < 10) {
-        return "Coat or normal jacket. ";
-      } else if (temp >= 10 && temp <= 15) {
-        return "Hoodie";
-      } else {
-        return "T-Shirt";
-      }
+      const localTemp = this.selectedUser !== null ? this.users[this.selectedUser].easilyCold ? temp - 5 : temp : temp;
+
+      if(this.selectedUser !== null &&this.users[this.selectedUser].gender === 'female'){
+        if (localTemp < 0) {
+          return "Winter Jacket";
+        } else if (localTemp >= 5 && localTemp < 10) {
+          return "Coat or normal jacket. ";
+        } else if (localTemp >= 10 && localTemp <= 15) {
+          return "Hoodie";
+        } else {
+          return "Dress";
+        }
+      } else{
+        if (localTemp < 0) {
+          return "Winter Jacket";
+        } else if (localTemp >= 5 && localTemp < 10) {
+          return "Coat or normal jacket. ";
+        } else if (localTemp >= 10 && localTemp <= 15) {
+          return "Hoodie";
+        } else {
+          return "T-Shirt";
+      }}
     },
 
     showBottom(temp) {
-      if (temp < 0) {
-        return "Ski-Pants";
-      } else if (temp >= 5 && temp <= 15) {
-        return "Pants";
+      const localTemp = this.selectedUser !== null ? this.users[this.selectedUser].easilyCold ? temp - 5 : temp : temp;
+
+      if (this.selectedUser !== null && this.users[this.selectedUser].gender === 'female'){
+        if (localTemp < 0) {
+          return "Ski-Pants";
+        } else if (localTemp >= 5 && localTemp <= 15) {
+          return "leggings";
+        } else {
+          return "Whatever you want under the dress";
+        }
       } else {
-        return "Shorts";
+        if (localTemp < 0) {
+          return "Ski-Pants";
+        } else if (localTemp >= 5 && localTemp <= 15) {
+          return "Pants";
+        } else {
+          return "Shorts";
+        }
       }
     },
     showDrink(temp) {
-      if (temp < 5) {
+      const localTemp = this.selectedUser !== null ? this.users[this.selectedUser].easilyCold ? temp - 5 : temp : temp;
+
+      if (localTemp < 5) {
         return "Bring hot drink";
-      } else if (temp >= 5 && temp < 15) {
+      } else if (localTemp >= 5 && localTemp < 15) {
         return "No drink required";
       } else {
         return "Bring cold drinks";
       }
     },
     showAccecories(temp) {
-      if (temp < 10) {
-        return "Placeholder under 10 grader";
-      } else if (temp >= 10 && temp < 15) {
-        return "Placeholder under 15 grader";
-      } else if (temp >= 15 && temp <= 20) {
-        return "Placeholder under 20 grader";
+      const localTemp = this.selectedUser !== null ? this.users[this.selectedUser].easilyCold ? temp - 5 : temp : temp;
+      if(this.selectedUser !== null && this.users[this.selectedUser].age > 50){
+        if (localTemp < 10) {
+          return "Placeholder under 10 grader (50+)";
+        } else if (localTemp >= 10 && localTemp < 15) {
+          return "Placeholder under 15 grader (50+)";
+        } else if (localTemp >= 15 && localTemp <= 20) {
+          return "Placeholder under 20 grader (50+)";
+        } else {
+          return "Placeholder over 20 grader (50+)";
+        }
       } else {
-        return "Placeholder over 20 grader";
+        if (localTemp < 10) {
+          return "Placeholder under 10 grader";
+        } else if (localTemp >= 10 && localTemp < 15) {
+          return "Placeholder under 15 grader";
+        } else if (localTemp >= 15 && localTemp <= 20) {
+          return "Placeholder under 20 grader";
+        } else {
+          return "Placeholder over 20 grader";
+        }
       }
     }
   },

@@ -39,7 +39,7 @@
           <div style="margin-right:10%">
             <div>
               <select v-model="selectedUser">
-                <option disabled value="">Select a user</option>
+                <option value="" disabled>Select a user</option>
                 <option v-for="(user, index) in users" :value="index" :key="index">
                   {{ user.age }} - {{ user.gender }}
                 </option>
@@ -57,35 +57,37 @@
 
     <main>
     <div>
-      <label for="search-bar">Search for a city:</label>
+      <!-- <label for="search-bar">Search for a city:</label>
       <input type="text" id="search-bar" v-model="inputValue" @input="handleInput" placeholder="Type a city name">
   
       <div class="result-box" v-show="showDropdown">
         <ul>
           <li v-for="keyword in filteredKeywords" :key="keyword" @click="selectInput(keyword)">{{ keyword }}</li>
         </ul>
-      </div>
-      <br>
+      </div> -->
+      <h2>User Creation:</h2>
     <label for="age">Age:</label>
       <input type="number" v-model="age" id="age">
       <label for="gender">Gender:</label>
       <select v-model="gender" id="gender">
-        <option value="">Please select</option>
+        <option disabled value="">Please select</option>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
       <label for="easily-cold">Easily Cold:</label>
       <input type="checkbox" v-model="easilyCold" id="easily-cold">
       <button type="button" @click="createUser()">Create User</button>
-      <div v-if="users.length > 0">
+      
+      <!--<div v-if="users.length > 0">
         <h2>Users:</h2>
         <ul>
           <li v-for="(user, index) in users" :key="index">
             {{ user.age }}, {{ user.gender }}, {{ user.easilyCold }}
           </li>
         </ul>
-      </div>
+      </div> -->
     <div>
+      <h2>Select City / Country</h2>
       <label for="cityInput">City:</label>
       <input type="text" id="cityInput" v-model="city" />
       <span class="input-space"></span>
@@ -97,17 +99,17 @@
     <div class="row">
 
       <div class="col-sm border bg-light">
-        Weatherforecast
+        <h2>Weatherforecast</h2>
         <canvas id="weatherChart"></canvas>
       </div>
       <div class="col-sm border bg-light">
-        Top
+        <h2>Top</h2>
         <div v-if="weather != null">
           {{ weather.days[day].appropriateTop }}
         </div>
       </div>
       <div class="col-sm border bg-light">
-      Bottle of Wottah
+        <h2>Bottle of Wottah</h2>
       <div v-if="weather != null">
         {{ weather.days[day].appropriateDrink }}
       </div>
@@ -116,7 +118,7 @@
     </div>
     <div class="row">
       <div class="col-sm border bg-light">
-        Choose Day and hour
+        <h2>Choose Day and hour</h2>
         <div v-if="selectedDay !== null">
           <p>You have selected {{ selectedDay.datetime }}</p>
           <button @click="previousDay()">Previous Day</button><button @click="nextDay()">Next day</button>
@@ -127,13 +129,13 @@
           </select>
       </div>
       <div class="col-sm border bg-light">
-        Bottom
+        <h2>Bottom</h2>
         <div v-if="weather != null">
           {{ weather.days[day].appropriateBottom }}
         </div>
       </div>
       <div class="col-sm border bg-light">
-        Accesories
+        <h2>Accesories</h2>
         <div v-if="weather != null">
           {{ weather.days[day].appropriateAccecories }}
         </div>
@@ -141,7 +143,7 @@
     </div>
     </div>
   
-    <table v-if="weather != null" class="table table-striped">
+    <!-- <table v-if="weather != null" class="table table-striped">
       <thead>
         <tr>
           <th>Date</th>
@@ -178,7 +180,7 @@
         </tr>
       </tbody>
     </table>
-    <div v-else>No such weather (Bad request)</div>
+    <div v-else>No such weather (Bad request)</div> -->
   </main>
   </div>
   <script src="index.js"></script>
